@@ -117,7 +117,7 @@ def main():
 
     model_name = args.model.split("/")[-1]
     print(f"Loading model {model_name}")
-    model, lm_eval_model = get_llm(
+    model, lm_eval_model, orig_device_map = get_llm(
         model_name=args.model,
         local_files_only=args.local_files_only,
         hf_token=args.hf_token,
@@ -162,7 +162,7 @@ def main():
     )
     report_gpu_memory("After pruning")
 
-    model = distribute_model(model)
+    model = distribute_model(model, device_map=orig_device_map)
 
     
     print("*" * 30)
